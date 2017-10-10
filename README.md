@@ -35,7 +35,8 @@ Run the docker container
     
     docker run  -v ${PWD}/server.crt:/usr/local/apache2/conf/server.crt \
            -v ${PWD}/server.key:/usr/local/apache2/conf/server.key \
-           -p 443:443    \
+           -p 80:80    \
+           -e ENABLE_SSL=1 \
            -e METACAT_DOMAIN=localhost   \
            -e METACAT_MN_DOMAIN=mn.example.com  \
            --name metacatui \
