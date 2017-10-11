@@ -22,5 +22,5 @@ cd metacatui
 git fetch
 git checkout tags/${METACATUI_TAG}
 cd ..
-
+docker build -t metacatui:${METACATUI_TAG} .
 

@@ -20,17 +20,40 @@ REST API
 
 Build the docker metacat image:
 
-    METACAT_UI_TAG=2_0_0RC1
-    ./setup.sh $METACAT_UI_TAG
-    docker build  -t metacatui:$METACAT_UI_TAG .
+*Visit [github.com/NCEAS/metacatui/releases](https://github.com/NCEAS/metacatui/releases) to discover 
+Metacat UI release tags*
+
+    METACAT_UI_TAG=<git tag>
+    ./build.sh $METACAT_UI_TAG
     
-Run the docker container 
+Run the docker container over HTTP:
     
     docker run  -p 80:80  \
            -e METACAT_DOMAIN=localhost   \
            -e METACAT_MN_DOMAIN=mn.example.com  \
            --name metacatui \
            -it metacatui:$METACAT_UI_TAG
+           
+Run the docker container with SSL:
+  
+*Create Self-signed SSL certificates*
+
+    openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -out server.crt \
+         -keyout server.key \
+         -subj "/C=US/ST=California/L=Berkeley/O=LBNL/OU=CRD/CN=localhost"
+
+
+*Run the dccker container over HTTPS*
+    
+    docker run  -p 443:443  \
+           -e ENABLE_SSL=1 \
+           -v ${PWD}/server.crt:/usr/local/apache2/conf/server.crt \
+           -v ${PWD}/server.key:/usr/local/apache2/conf/server.key \
+           -e METACAT_DOMAIN=localhost   \
+           -e METACAT_MN_DOMAIN=mn.example.com  \
+           --name metacatui-secure \
+           -it metacatui:$METACAT_UI_TAG         
+
 
 The metacat UI should be able to be accessed at `http://localhost/metacatui`
 
