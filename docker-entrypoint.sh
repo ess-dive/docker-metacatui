@@ -5,9 +5,10 @@ set -e
 if [ "$1" = 'httpd' ]; then
     if [ $ENABLE_SSL -eq 1 ];
     then
-        $@ -D EnableSSL
+        EXTRA_ARGS="-D EnableSSL"
     fi
+
 
 fi
 
-exec $@
+exec $@ $EXTRA_ARGS

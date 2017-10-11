@@ -12,16 +12,33 @@ MetacatUI is a client-side web interface for querying Metacat servers and other 
 that implement the DataONE REST API.
 
 ## Usage
-The Metacat UI docker image requires access to a Metacat member node
-REST API
+The Metacat UI docker image requires access to a Metacat member node.
 
 
 # How to use this image
 
+## Image Environment Variables
+The following environment variables are optional:
+
+**ENABLE_SSL:** pass a value of `1` to enable the ssl configuration.
+
+**METACAT_UI_DOMAIN:** (default: 'localhost') The domain name of the 
+metacatui application. This is used in the apache configuration. 
+(e.g `ServerName ${METACAT_UI_DOMAIN}`)
+
+**METACAT_MN_DOMAIN:** (default: 'localhost') The domain name of the 
+metacat member node service. This is used in the apache configuration
+as the http proxy request.  The metacat member node port must be `8080`.
+
+
+## Building and Running 
 Build the docker metacat image:
 
 *Visit [github.com/NCEAS/metacatui/releases](https://github.com/NCEAS/metacatui/releases) to discover 
 Metacat UI release tags*
+
+The `build.sh` script will clone the [github.com/NCEAS/metacatui](https://github.com/NCEAS/metacatui) Github
+repository, checkout the specified git tag and build the metacat docker image with the tag `metacat:<git tag>`.
 
     METACAT_UI_TAG=<git tag>
     ./build.sh $METACAT_UI_TAG
@@ -29,10 +46,10 @@ Metacat UI release tags*
 Run the docker container over HTTP:
     
     docker run  -p 80:80  \
-           -e METACAT_DOMAIN=localhost   \
-           -e METACAT_MN_DOMAIN=mn.example.com  \
            --name metacatui \
            -it metacatui:$METACAT_UI_TAG
+           
+*The metacat UI should be able to be accessed at `http://localhost/metacatui`*
            
 Run the docker container with SSL:
   
@@ -43,19 +60,17 @@ Run the docker container with SSL:
          -subj "/C=US/ST=California/L=Berkeley/O=LBNL/OU=CRD/CN=localhost"
 
 
-*Run the dccker container over HTTPS*
+*Run the docker container over HTTPS*
     
     docker run  -p 443:443  \
            -e ENABLE_SSL=1 \
            -v ${PWD}/server.crt:/usr/local/apache2/conf/server.crt \
            -v ${PWD}/server.key:/usr/local/apache2/conf/server.key \
-           -e METACAT_DOMAIN=localhost   \
-           -e METACAT_MN_DOMAIN=mn.example.com  \
            --name metacatui-secure \
            -it metacatui:$METACAT_UI_TAG         
 
 
-The metacat UI should be able to be accessed at `http://localhost/metacatui`
+*The metacat UI should be able to be accessed at `https://localhost/metacatui`*
 
 
 # License
