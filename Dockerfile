@@ -5,7 +5,7 @@ ENV METACAT_MN_DOMAIN=localhost
 
 ADD httpd.conf /usr/local/apache2/conf/httpd.conf
 ADD httpd-ssl.conf /usr/local/apache2/conf/extra/httpd-ssl.conf
-ADD metacatui/metacatui/src/main/webapp/ /usr/local/apache2/htdocs/metacatui
+ADD metacatui/metacatui/src/main/webapp/ /tmp/metacatui
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat

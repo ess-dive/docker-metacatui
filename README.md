@@ -30,6 +30,9 @@ metacatui application. This is used in the apache configuration.
 metacat member node service. This is used in the apache configuration
 as the http proxy request.  The metacat member node port must be `8080`.
 
+**METACATUI_CONTEXT:** If this is set then the metacat ui application will
+be located at this URI path.  Otherwise the application will be located
+at the root URI.
 
 ## Building and Running 
 Build the docker metacat image:
