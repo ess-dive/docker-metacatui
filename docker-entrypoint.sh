@@ -10,7 +10,7 @@ if [ "$1" = 'httpd' ]; then
     # Now copy the metacatui files over
     cp -rn /tmp/metacatui/* /usr/local/apache2/htdocs/$METACATUI_CONTEXT
 
-    if [ $ENABLE_SSL -eq 1 ];
+    if [ "$ENABLE_SSL" == "1" ];
     then
         EXTRA_ARGS="-D EnableSSL"
     fi
