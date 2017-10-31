@@ -2,7 +2,6 @@ FROM httpd:2.4
 
 ENV METACAT_UI_DOMAIN=localhost
 ENV METACAT_MN_DOMAIN=localhost
-ENV METACAT_MN_CONTEXT=metacat
 
 ADD httpd.conf /usr/local/apache2/conf/httpd.conf
 ADD httpd-ssl.conf /usr/local/apache2/conf/extra/httpd-ssl.conf
