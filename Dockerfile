@@ -9,6 +9,7 @@ ENV SSL_SERVER_CERT=/usr/local/apache2/conf/server.crt
 ADD httpd.conf /usr/local/apache2/conf/httpd.conf
 ADD httpd-ssl.conf /usr/local/apache2/conf/extra/httpd-ssl.conf
 ADD metacatui/metacatui/src/main/webapp/ /tmp/metacatui
+ADD ca-bundle.crt /usr/local/apache2/conf/ssl.crt/ca-bundle.crt
 RUN rm -rf htdocs/*
 
 COPY docker-entrypoint.sh /usr/local/bin/

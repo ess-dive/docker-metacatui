@@ -7,6 +7,7 @@ if [ "$1" = 'httpd' ]; then
     # If there is a context set create the directory
     mkdir -p /usr/local/apache2/htdocs/$METACATUI_CONTEXT
 
+
     # Now copy the metacatui files over
     cp -rn /tmp/metacatui/* /usr/local/apache2/htdocs/$METACATUI_CONTEXT
 
