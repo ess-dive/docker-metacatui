@@ -5,6 +5,7 @@ ENV METACAT_MN_DOMAIN=localhost
 ENV METACAT_APP_CONTEXT=metacat
 ENV SSL_SERVER_KEY=/usr/local/apache2/conf/server.key
 ENV SSL_SERVER_CERT=/usr/local/apache2/conf/server.crt
+ENV CA_BUNDLE_CERT=/config/ca-bundle.crt
 
 ADD httpd.conf /usr/local/apache2/conf/httpd.conf
 ADD httpd-ssl.conf /usr/local/apache2/conf/extra/httpd-ssl.conf

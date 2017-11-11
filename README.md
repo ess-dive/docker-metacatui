@@ -34,6 +34,14 @@ as the http proxy request.  The metacat member node port must be `8080`.
 be located at this URI path.  Otherwise the application will be located
 at the root URI.
 
+**SSL_SERVER_KEY:** (default: '/usr/local/apache2/conf/server.key') File path to the SSL Server Key
+
+**SSL_SERVER_CERT:** (default: '/usr/local/apache2/conf/server.crt') File path to the SSL Server Certificate
+
+**CA_BUNDLE_CERT:** ( default: '/config/ca-bundle.crt') Additional CA
+Certificats to verify. Appends the CA certificate verification (ca-bundle.crt) 
+to the single file containing all of them (file must be PEM encoded)
+
 ## Building and Running 
 Build the docker metacat image:
 
