@@ -8,14 +8,6 @@ if [ "$1" = 'httpd' ]; then
     mkdir -p /usr/local/apache2/htdocs/$METACATUI_CONTEXT
 
 
-    # Is there a certificate chain to add?
-    if [ -f $CA_BUNDLE_CERT ];
-    then
-        echo "Appending certificate chain from $CA_BUNDLE_CERT "
-        cat $CA_BUNDLE_CERT >> /usr/local/apache2/conf/ssl.crt/ca-bundle.crt
-    fi
-
-
     # Now copy the metacatui files over
     cp -rn /tmp/metacatui/* /usr/local/apache2/htdocs/$METACATUI_CONTEXT
 
@@ -23,7 +15,6 @@ if [ "$1" = 'httpd' ]; then
     then
         EXTRA_ARGS="-D EnableSSL"
     fi
-
 
 fi
 

@@ -3,9 +3,9 @@ FROM httpd:2.4
 ENV METACAT_UI_DOMAIN=localhost
 ENV METACAT_MN_DOMAIN=localhost
 ENV METACAT_APP_CONTEXT=metacat
-ENV SSL_SERVER_KEY=/usr/local/apache2/conf/server.key
-ENV SSL_SERVER_CERT=/usr/local/apache2/conf/server.crt
-ENV CA_BUNDLE_CERT=/config/ca-bundle.crt
+ENV SSL_SERVER_KEY=conf/server.key
+ENV SSL_SERVER_CERT=conf/server.crt
+ENV SSL_SERVER_CHAIN=conf/server-ca.crt
 
 ADD httpd.conf /usr/local/apache2/conf/httpd.conf
 ADD httpd-ssl.conf /usr/local/apache2/conf/extra/httpd-ssl.conf

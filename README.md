@@ -34,13 +34,17 @@ as the http proxy request.  The metacat member node port must be `8080`.
 be located at this URI path.  Otherwise the application will be located
 at the root URI.
 
-**SSL_SERVER_KEY:** (default: '/usr/local/apache2/conf/server.key') File path to the SSL Server Key
+**SSL_SERVER_KEY:** (default: '/usr/local/apache2/conf/server.key') File path to 
+qqthe SSL Server Key
 
-**SSL_SERVER_CERT:** (default: '/usr/local/apache2/conf/server.crt') File path to the SSL Server Certificate
+**SSL_SERVER_CERT:** (default: '/usr/local/apache2/conf/server.crt') File path to 
+the SSL Server Certificate
 
-**CA_BUNDLE_CERT:** ( default: '/config/ca-bundle.crt') Additional CA
-Certificats to verify. Appends the CA certificate verification (ca-bundle.crt) 
-to the single file containing all of them (file must be PEM encoded)
+**SSL_SERVER_CHAIN: Point SSLCertificateChainFile at a file containing the
+concatenation of PEM encoded CA certificates which form the certificate chain 
+for the server certificate. Alternatively the referenced file can be the 
+same as SSLCertificateFile when the CA certificates are directly appended to 
+the server certificate for convenience.
 
 ## Building and Running 
 Build the docker metacat image:
@@ -63,13 +67,21 @@ Run the docker container over HTTP:
 *The metacat UI should be able to be accessed at `http://localhost/metacatui`*
            
 Run the docker container with SSL:
+
+*Create Root CA for self-signed certificate:
+
+    openssl genrsa -out rootCA.key 2048
+    openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 \
+        -subj "/C=US/ST=California/L=Berkeley/O=LBNL/OU=CRD/CN=localhost" \
+        -out rootCA.pem
   
 *Create Self-signed SSL certificates*
 
-    openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -out server.crt \
-         -keyout server.key \
-         -subj "/C=US/ST=California/L=Berkeley/O=LBNL/OU=CRD/CN=localhost"
-
+    openssl genrsa -out server.key 2048
+    openssl req -new -subj "/C=US/ST=California/L=Berkeley/O=LBNL/OU=CRD/CN=localhost" \
+       -key server.key -out server.csr
+    openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key \
+        -CAcreateserial -out server.crt -days 500 -sha256
 
 *Run the docker container over HTTPS*
     
