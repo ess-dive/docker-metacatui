@@ -22,6 +22,7 @@ cd metacatui
 git fetch
 git checkout tags/${METACATUI_TAG}
 cd ..
+docker pull httpd:2.4
 docker build -t metacatui:${METACATUI_TAG} .
 docker tag metacatui:${METACATUI_TAG} metacatui
 
