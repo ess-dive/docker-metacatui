@@ -1,5 +1,5 @@
 --- httpd.conf	2018-03-22 14:10:25.000000000 -0700
-+++ httpd.conf-metacatui	2018-03-25 18:15:11.000000000 -0700
++++ httpd.conf-metacatui	2018-04-07 14:17:25.000000000 -0700
 @@ -91,7 +91,7 @@
  #LoadModule cache_module modules/mod_cache.so
  #LoadModule cache_disk_module modules/mod_cache_disk.so
@@ -40,7 +40,24 @@
  #LoadModule optional_hook_export_module modules/mod_optional_hook_export.so
  #LoadModule optional_hook_import_module modules/mod_optional_hook_import.so
  #LoadModule optional_fn_import_module modules/mod_optional_fn_import.so
-@@ -535,7 +537,9 @@
+@@ -236,6 +238,7 @@
+ # If your host doesn't have a registered DNS name, enter its IP address here.
+ #
+ #ServerName www.example.com:80
++ServerName ${METACAT_UI_DOMAIN}:80
+ 
+ #
+ # Deny access to the entirety of your server's filesystem. You must
+@@ -273,7 +276,7 @@
+     # http://httpd.apache.org/docs/2.4/mod/core.html#options
+     # for more information.
+     #
+-    Options Indexes FollowSymLinks
++    Options FollowSymLinks
+ 
+     #
+     # AllowOverride controls what directives may be placed in .htaccess files.
+@@ -535,7 +538,9 @@
  </IfModule>
  
  # Secure (SSL/TLS) connections
@@ -51,11 +68,11 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -546,3 +550,14 @@
+@@ -546,3 +551,14 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
-+ServerName ${METACAT_UI_DOMAIN}:80
++Options -Indexes
 +
 +<VirtualHost *:80>
 +
