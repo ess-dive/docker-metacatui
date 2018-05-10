@@ -14,7 +14,6 @@ that implement the DataONE REST API.
 ## Usage
 The Metacat UI docker image requires access to a Metacat member node.
 
-
 # How to use this image
 
 ## Image Environment Variables
