@@ -41,7 +41,8 @@ qqthe SSL Server Key
 **SSL_SERVER_CERT:** (default: '/usr/local/apache2/conf/server.crt') File path to 
 the SSL Server Certificate
 
-**SSL_SERVER_CHAIN: Point SSLCertificateChainFile at a file containing the
+**SSL_SERVER_CHAIN:** (default: '/usr/local/apache2/conf/server-ca.crt')
+Point SSLCertificateChainFile at a file containing the
 concatenation of PEM encoded CA certificates which form the certificate chain 
 for the server certificate. Alternatively the referenced file can be the 
 same as SSLCertificateFile when the CA certificates are directly appended to 
