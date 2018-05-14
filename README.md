@@ -112,3 +112,5 @@ This image is officially supported on Docker version 17.09.0.
 Current Project Team Members:
 
  * [@vchendrix](https://github.com/vchendrix)
+ * [@csnavely ](https://gitlab.com/csnavely)
+ * [@shreddd ](https://gitlab.com/shreddd)
