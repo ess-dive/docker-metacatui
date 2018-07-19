@@ -1,5 +1,5 @@
 --- httpd-ssl.conf	2018-03-22 14:10:22.000000000 -0700
-+++ httpd-ssl.conf-metacatui	2018-07-18 16:27:36.000000000 -0700
++++ httpd-ssl.conf-metacatui	2018-03-25 18:18:42.000000000 -0700
 @@ -122,7 +122,7 @@
  
  #   General setup for the virtual host
@@ -45,7 +45,7 @@
  
  #   Certificate Revocation Lists (CRL):
  #   Set the CA revocation path where to find CA CRLs for client
-@@ -287,4 +287,24 @@
+@@ -287,4 +287,22 @@
  CustomLog "/usr/local/apache2/logs/ssl_request_log" \
            "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
  
@@ -66,7 +66,5 @@
 +
 +ProxyPass "/${METACAT_APP_CONTEXT}/" "ajp://${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/" nocanon retry=0 timeout=300
 +ProxyPassReverse "/${METACAT_APP_CONTEXT}/" "ajp:/${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/"
-+
-+RemoteIPInternalProxy 10.42.0.0/16
 +
  </VirtualHost>                                  
