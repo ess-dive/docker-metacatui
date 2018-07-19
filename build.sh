@@ -8,21 +8,21 @@ if [ -z $1 ];
     exit
 fi
 
-
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 METACATUI_TAG=$1
 
 
 # Get Metacat UI
-if [ ! -d metacatui ];
+if [ ! -d $DIR/metacatui ];
 then
-    git clone https://github.com/NCEAS/metacatui.git
+    git clone https://github.com/NCEAS/metacatui.git $DIR/metacatui
 fi
 
-cd metacatui
+cd $DIR/metacatui
 git fetch
 git checkout tags/${METACATUI_TAG}
 cd ..
 docker pull httpd:2.4
-docker build -t metacatui:${METACATUI_TAG} .
+docker build -t metacatui:${METACATUI_TAG} $DIR
 docker tag metacatui:${METACATUI_TAG} metacatui
 

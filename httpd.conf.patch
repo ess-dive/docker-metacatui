@@ -1,5 +1,5 @@
 --- httpd.conf	2018-03-22 14:10:25.000000000 -0700
-+++ httpd.conf-metacatui	2018-04-07 14:17:25.000000000 -0700
++++ httpd.conf-metacatui	2018-07-18 11:51:55.000000000 -0700
 @@ -91,7 +91,7 @@
  #LoadModule cache_module modules/mod_cache.so
  #LoadModule cache_disk_module modules/mod_cache_disk.so
@@ -9,11 +9,13 @@
  #LoadModule socache_dbm_module modules/mod_socache_dbm.so
  #LoadModule socache_memcache_module modules/mod_socache_memcache.so
  #LoadModule watchdog_module modules/mod_watchdog.so
-@@ -137,16 +137,16 @@
+@@ -136,17 +136,17 @@
+ #LoadModule unique_id_module modules/mod_unique_id.so
  LoadModule setenvif_module modules/mod_setenvif.so
  LoadModule version_module modules/mod_version.so
- #LoadModule remoteip_module modules/mod_remoteip.so
+-#LoadModule remoteip_module modules/mod_remoteip.so
 -#LoadModule proxy_module modules/mod_proxy.so
++LoadModule remoteip_module modules/mod_remoteip.so
 +LoadModule proxy_module modules/mod_proxy.so
  #LoadModule proxy_connect_module modules/mod_proxy_connect.so
  #LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
@@ -68,7 +70,7 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -546,3 +551,14 @@
+@@ -546,3 +551,16 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
@@ -81,5 +83,7 @@
 +
 +        ProxyPass "/${METACAT_APP_CONTEXT}/" "ajp://${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/" nocanon retry=0 timeout=300
 +        ProxyPassReverse "/${METACAT_APP_CONTEXT}/" "ajp:/${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/"
++
++        RemoteIPInternalProxy 10.42.0.0/16
 +
 +</VirtualHost>
