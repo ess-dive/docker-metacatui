@@ -1,5 +1,5 @@
---- httpd-ssl.conf	2018-03-22 14:10:22.000000000 -0700
-+++ httpd-ssl.conf-metacatui	2018-03-25 18:18:42.000000000 -0700
+--- image-httpd-ssl.conf	2018-09-26 09:43:02.000000000 -0700
++++ httpd-ssl.conf	2018-09-26 10:02:06.000000000 -0700
 @@ -122,7 +122,7 @@
  
  #   General setup for the virtual host
@@ -27,16 +27,17 @@
  #SSLCertificateKeyFile "/usr/local/apache2/conf/server-dsa.key"
  #SSLCertificateKeyFile "/usr/local/apache2/conf/server-ecc.key"
  
-@@ -162,7 +162,7 @@
+@@ -162,7 +162,8 @@
  #   the referenced file can be the same as SSLCertificateFile
  #   when the CA certificates are directly appended to the server
  #   certificate for convenience.
 -#SSLCertificateChainFile "/usr/local/apache2/conf/server-ca.crt"
 +SSLCertificateChainFile ${SSL_SERVER_CHAIN}
++
  
  #   Certificate Authority (CA):
  #   Set the CA certificate verification path where to find CA
-@@ -172,7 +172,7 @@
+@@ -172,7 +173,7 @@
  #         to point to the certificate files. Use the provided
  #         Makefile to update the hash symlinks after changes.
  #SSLCACertificatePath "/usr/local/apache2/conf/ssl.crt"
@@ -45,7 +46,6 @@
  
  #   Certificate Revocation Lists (CRL):
  #   Set the CA revocation path where to find CA CRLs for client
-@@ -287,4 +287,22 @@
  CustomLog "/usr/local/apache2/logs/ssl_request_log" \
            "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
  

@@ -31,10 +31,6 @@ metacatui application. This is used in the apache configuration.
 metacat member node service. This is used in the apache configuration
 as the http proxy request.  The metacat member node port must be `8080`.
 
-**METACATUI_CONTEXT:** If this is set then the metacat ui application will
-be located at this URI path.  Otherwise the application will be located
-at the root URI.
-
 **SSL_SERVER_KEY:** (default: '/usr/local/apache2/conf/server.key') File path to 
 qqthe SSL Server Key
 
@@ -97,7 +93,29 @@ Run the docker container with SSL:
 
 *The metacat UI should be able to be accessed at `https://localhost/metacatui`*
 
+## Patch httpd conf files
 
+*Get the conf files from the latest image*
+
+    docker pull httpd:2.4
+    
+*If the image updated, then determine if the conf files changed*
+    
+    docker run --entrypoint "/bin/cat" httpd:2.4  conf/httpd.conf > image-httpd.conf
+    docker run --entrypoint "/bin/cat" httpd:2.4  conf/extra/httpd-ssl.conf > image-httpd-ssl.conf
+    git diff image-httpd.conf image-httpd-ssl.conf
+    
+    
+*If modifying the conf files, update `httpd.conf` and `httpd.conf`*  Then create the patch files.
+
+    diff  -u image-httpd.conf httpd.conf > httpd.conf.patch 
+    diff  -u image-httpd-ssl.conf httpd-ssl.conf > httpd-ssl.conf.patch
+    
+*Check the patch to see if the changes make sense*
+
+    git diff httpd.conf.patch httpd-ssl.conf.patch
+    
+If everything makes sense, build and test the new image.  Commit all the changes to the repository.
 # License
 
 TBD
@@ -105,7 +123,7 @@ TBD
 # Supported Docker versions
 
 This image is officially supported on Docker version 17.09.0.
-
+   
 
 # People
 
