@@ -1,5 +1,5 @@
---- image-httpd.conf	2018-09-26 09:50:19.000000000 -0700
-+++ httpd.conf	2018-09-26 10:07:47.000000000 -0700
+--- image-httpd.conf	2018-09-28 07:46:16.000000000 -0700
++++ httpd.conf	2018-09-28 09:03:21.000000000 -0700
 @@ -91,7 +91,7 @@
  #LoadModule cache_module modules/mod_cache.so
  #LoadModule cache_disk_module modules/mod_cache_disk.so
@@ -9,11 +9,13 @@
  #LoadModule socache_dbm_module modules/mod_socache_dbm.so
  #LoadModule socache_memcache_module modules/mod_socache_memcache.so
  #LoadModule watchdog_module modules/mod_watchdog.so
-@@ -137,16 +137,16 @@
+@@ -136,17 +136,17 @@
+ #LoadModule unique_id_module modules/mod_unique_id.so
  LoadModule setenvif_module modules/mod_setenvif.so
  LoadModule version_module modules/mod_version.so
- #LoadModule remoteip_module modules/mod_remoteip.so
+-#LoadModule remoteip_module modules/mod_remoteip.so
 -#LoadModule proxy_module modules/mod_proxy.so
++LoadModule remoteip_module modules/mod_remoteip.so
 +LoadModule proxy_module modules/mod_proxy.so
  #LoadModule proxy_connect_module modules/mod_proxy_connect.so
  #LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
@@ -56,7 +58,7 @@
 +    # to a MetacatUI view via a full pathname (/data) rather than a hash 
 +    # (/#data), Apache will serve the MetacatUI index.html page as a fallback 
 +    # resource instead of returning a 404 error. The fallback resource is 
-+    # qspecified via this Apache setting:
++    # specified via this Apache setting:
 +    FallbackResource /index.html
 +    
      #
@@ -98,7 +100,7 @@
 +
 +        ProxyPass "/${METACAT_APP_CONTEXT}/" "ajp://${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/" nocanon retry=0 timeout=300
 +        ProxyPassReverse "/${METACAT_APP_CONTEXT}/" "ajp:/${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/"
-+        
-+        RemoteIPInternalProxy 10.42.0.0/16
++      
++        RemoteIPInternalProxy 10.42.0.0/16        
 +
 +</VirtualHost>
