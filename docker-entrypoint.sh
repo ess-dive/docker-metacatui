@@ -4,12 +4,9 @@ set -e
 
 if [ "$1" = 'httpd' ]; then
 
-    # If there is a context set create the directory
-    mkdir -p /usr/local/apache2/htdocs/$METACATUI_CONTEXT
-
 
     # Now copy the metacatui files over
-    cp -rnlv /tmp/metacatui/* /usr/local/apache2/htdocs/$METACATUI_CONTEXT
+    cp -rnv /tmp/metacatui/* .
 
     if [ "$ENABLE_SSL" == "1" ];
     then
