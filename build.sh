@@ -19,12 +19,12 @@ then
     ESSDIVE_GID=$3
 fi
 
-if [ ! -z $METACAT_UID ];
+if [ ! -z $ESSDIVE_UID ];
 then
   BUILD_ARGS="${BUILD_ARGS} --build-arg METACATUI_UID=$ESSDIVE_UID"
 fi
 
-if [ ! -z $METACAT_GID ];
+if [ ! -z $ESSDIVE_GID ];
 then
   BUILD_ARGS="${BUILD_ARGS} --build-arg METACATUI_GID=$ESSDIVE_GID"
 fi
@@ -44,6 +44,7 @@ git fetch
 git checkout tags/${METACATUI_TAG}
 cd ..
 docker pull httpd:2.4
-docker build -t metacatui:${METACATUI_TAG} $DIR
+echo "docker build -t metacatui:${METACATUI_TAG} $BUILD_ARGS $DIR"
+docker build -t metacatui:${METACATUI_TAG} $BUILD_ARGS $DIR
 docker tag metacatui:${METACATUI_TAG} metacatui
 

@@ -24,16 +24,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Merge recommended settings for apache into default configuration
-# Change access righs to conf, logs, bin from root to metacatui
-# setcap to bind to privileged ports as non-root
 RUN groupadd -g ${METACATUI_GID} metacatui \
     && useradd -u ${METACATUI_UID} -g ${METACATUI_GID} -c 'MetacatUI User'  --no-create-home metacatui \
     && chown -hR metacatui:metacatui /usr/local/apache2/ \
     && chmod g+ws  /usr/local/apache2/htdocs/ \
     && patch conf/extra/httpd-ssl.conf /tmp/httpd-ssl.conf.patch \
-    && patch conf/httpd.conf /tmp/httpd.conf.patch \
-    && setcap 'cap_net_bind_service=+ep' /usr/local/apache2/bin/httpd \
-    && getcap /usr/local/apache2/bin/httpd
+    && patch conf/httpd.conf /tmp/httpd.conf.patch 
+
+#setcap to bind to privileged ports as non-root
+RUN setcap 'cap_net_bind_service=+ep' /usr/local/apache2/bin/httpd
+RUN getcap /usr/local/apache2/bin/httpd
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
