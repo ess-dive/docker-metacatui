@@ -20,7 +20,7 @@ ADD ca-bundle.crt /usr/local/apache2/conf/ssl.crt/ca-bundle.crt
 RUN rm -rf htdocs/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        patch libcap2\
+        patch libcap2-bin\
     && rm -rf /var/lib/apt/lists/*
 
 # Merge recommended settings for apache into default configuration
@@ -29,7 +29,7 @@ RUN groupadd -g ${METACATUI_GID} metacatui \
     && chown -hR metacatui:metacatui /usr/local/apache2/ \
     && chmod g+ws  /usr/local/apache2/htdocs/ \
     && patch conf/extra/httpd-ssl.conf /tmp/httpd-ssl.conf.patch \
-    && patch conf/httpd.conf /tmp/httpd.conf.patch 
+    && patch conf/httpd.conf /tmp/httpd.conf.patch
 
 #setcap to bind to privileged ports as non-root
 RUN setcap 'cap_net_bind_service=+ep' /usr/local/apache2/bin/httpd
