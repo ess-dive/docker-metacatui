@@ -43,8 +43,53 @@ cd $DIR/metacatui
 git fetch
 git checkout tags/${METACATUI_TAG}
 cd ..
+
+echo "************************************"
+echo " Checking for a new httpd:2.4 image "
+echo "************************************"
+
+# Get the current image id
+ID_IMAGE_LOCAL=`docker inspect --format='{{.Id}}' httpd:2.4`
+
 docker pull httpd:2.4
+
+# Get the new image id
+ID_IMAGE_REMOTE=`docker inspect --format='{{.Id}}' httpd:2.4`
+
+echo "ID_IMAGE_LOCAL  $ID_IMAGE_LOCAL"
+echo "ID_IMAGE_REMOTE $ID_IMAGE_REMOTE"
+
+if [ "$ID_IMAGE_REMOTE" != "$ID_IMAGE_LOCAL" ];
+then
+    echo "***********************************"
+    echo "A new httpd:2.4 image was pulled"
+    echo "***********************************"
+    docker run --entrypoint "/bin/cat" httpd:2.4  conf/httpd.conf > image-httpd.conf
+    docker run --entrypoint "/bin/cat" httpd:2.4  conf/extra/httpd-ssl.conf > image-httpd-ssl.conf
+    
+    DIFF_CONFS=`git diff image-httpd.conf image-httpd-ssl.conf`
+    if [ ! -z $DIFF_CONFS ];
+    then
+        echo "***************************************"
+        echo "One of the image configs is different"
+        echo "You need to review for patch changes"
+        echo "***************************************"
+        echo $DIFF_CONFS
+        exit 1
+    fi
+
+fi
+
+echo "***********************************"
+echo "Patching configuration files"
+echo "***********************************"
+
+# Create path files for the apache conf files
+diff  -u image-httpd.conf httpd.conf > httpd.conf.patch || true
+diff  -u image-httpd-ssl.conf httpd-ssl.conf > httpd-ssl.conf.patch || true
+
 echo "docker build -t metacatui:${METACATUI_TAG} $BUILD_ARGS $DIR"
 docker build -t metacatui:${METACATUI_TAG} $BUILD_ARGS $DIR
 docker tag metacatui:${METACATUI_TAG} metacatui
+docker tag metacatui:${METACATUI_TAG} ${REGISTRY_SPIN}/metacatui:${METACATUI_TAG}
 

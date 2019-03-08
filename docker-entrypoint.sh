@@ -13,6 +13,11 @@ if [ "$1" = 'httpd' ]; then
         EXTRA_ARGS="-D EnableSSL"
     fi
 
+    if [ "$ENABLE_REVERSE_PROXY" == "1" ];
+    then
+         EXTRA_ARGS="$EXTRA_ARGS -D EnableReverseProxy"
+    fi
+
 fi
 
 exec $@ $EXTRA_ARGS
