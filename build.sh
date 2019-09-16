@@ -66,7 +66,7 @@ then
     echo "***********************************"
     docker run --entrypoint "/bin/cat" httpd:2.4  conf/httpd.conf > image-httpd.conf
     docker run --entrypoint "/bin/cat" httpd:2.4  conf/extra/httpd-ssl.conf > image-httpd-ssl.conf
-    
+
     DIFF_CONFS=`git diff image-httpd.conf image-httpd-ssl.conf`
     if [ ! -z $DIFF_CONFS ];
     then
@@ -88,8 +88,17 @@ echo "***********************************"
 diff  -u image-httpd.conf httpd.conf > httpd.conf.patch || true
 diff  -u image-httpd-ssl.conf httpd-ssl.conf > httpd-ssl.conf.patch || true
 
-echo "docker build -t metacatui:${METACATUI_TAG} $BUILD_ARGS $DIR"
-docker build -t metacatui:${METACATUI_TAG} $BUILD_ARGS $DIR
-docker tag metacatui:${METACATUI_TAG} metacatui
-docker tag metacatui:${METACATUI_TAG} ${REGISTRY_SPIN}/metacatui:${METACATUI_TAG}
+cd $DIR
+DOCKER_TAG="${METACATUI_TAG}-p$(cd $DIR; git rev-list HEAD --count)"
+# CREATE image_version.yml
+echo "****************************"
+echo "BUILDING image_version"
+echo "****************************"
+git log -n 1 --pretty="commit_count:  $(git rev-list HEAD --count)%ncommit_hash:   %h%nsubject:       %s%ncommitter:     %cN <%ce>%ncommiter_date: %ci%nauthor:        %aN <%ae>%nauthor_date:   %ai%nref_names:     %D" > image_version.yml
+cat image_version.yml
+
+echo "docker build -t metacatui:${DOCKER_TAG} $BUILD_ARGS ."
+docker build -t metacatui:${DOCKER_TAG} $BUILD_ARGS .
+docker tag metacatui:${DOCKER_TAG} metacatui
+docker tag metacatui:${DOCKER_TAG} ${REGISTRY_SPIN}/metacatui:${DOCKER_TAG}
 

@@ -1,6 +1,6 @@
---- image-httpd.conf	2019-03-07 12:30:46.000000000 -0800
-+++ httpd.conf	2019-03-08 10:02:09.000000000 -0800
-@@ -89,9 +89,9 @@
+--- image-httpd.conf	2019-09-16 13:19:48.000000000 -0700
++++ httpd.conf	2019-08-19 21:31:50.000000000 -0700
+@@ -89,12 +89,11 @@
  #LoadModule isapi_module modules/mod_isapi.so
  #LoadModule file_cache_module modules/mod_file_cache.so
  #LoadModule cache_module modules/mod_cache.so
@@ -11,8 +11,19 @@
 +LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
  #LoadModule socache_dbm_module modules/mod_socache_dbm.so
  #LoadModule socache_memcache_module modules/mod_socache_memcache.so
+-#LoadModule socache_redis_module modules/mod_socache_redis.so
  #LoadModule watchdog_module modules/mod_watchdog.so
-@@ -136,17 +136,17 @@
+ #LoadModule macro_module modules/mod_macro.so
+ #LoadModule dbd_module modules/mod_dbd.so
+@@ -120,7 +119,6 @@
+ #LoadModule deflate_module modules/mod_deflate.so
+ #LoadModule xml2enc_module modules/mod_xml2enc.so
+ #LoadModule proxy_html_module modules/mod_proxy_html.so
+-#LoadModule brotli_module modules/mod_brotli.so
+ LoadModule mime_module modules/mod_mime.so
+ #LoadModule ldap_module modules/mod_ldap.so
+ LoadModule log_config_module modules/mod_log_config.so
+@@ -138,17 +136,17 @@
  #LoadModule unique_id_module modules/mod_unique_id.so
  LoadModule setenvif_module modules/mod_setenvif.so
  LoadModule version_module modules/mod_version.so
@@ -34,7 +45,7 @@
  #LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
  #LoadModule proxy_express_module modules/mod_proxy_express.so
  #LoadModule proxy_hcheck_module modules/mod_proxy_hcheck.so
-@@ -156,7 +156,7 @@
+@@ -158,7 +156,7 @@
  #LoadModule session_dbd_module modules/mod_session_dbd.so
  #LoadModule slotmem_shm_module modules/mod_slotmem_shm.so
  #LoadModule slotmem_plain_module modules/mod_slotmem_plain.so
@@ -43,7 +54,15 @@
  #LoadModule optional_hook_export_module modules/mod_optional_hook_export.so
  #LoadModule optional_hook_import_module modules/mod_optional_hook_import.so
  #LoadModule optional_fn_import_module modules/mod_optional_fn_import.so
-@@ -235,7 +235,7 @@
+@@ -166,7 +164,6 @@
+ #LoadModule dialup_module modules/mod_dialup.so
+ #LoadModule http2_module modules/mod_http2.so
+ #LoadModule proxy_http2_module modules/mod_proxy_http2.so
+-#LoadModule md_module modules/mod_md.so
+ #LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so
+ #LoadModule lbmethod_bytraffic_module modules/mod_lbmethod_bytraffic.so
+ #LoadModule lbmethod_bybusyness_module modules/mod_lbmethod_bybusyness.so
+@@ -238,7 +235,7 @@
  #
  # If your host doesn't have a registered DNS name, enter its IP address here.
  #
@@ -52,7 +71,7 @@
  
  #
  # Deny access to the entirety of your server's filesystem. You must
-@@ -261,6 +261,14 @@
+@@ -264,6 +261,14 @@
  #
  DocumentRoot "/usr/local/apache2/htdocs"
  <Directory "/usr/local/apache2/htdocs">
@@ -67,7 +86,7 @@
      #
      # Possible values for the Options directive are "None", "All",
      # or any combination of:
-@@ -273,7 +281,7 @@
+@@ -276,7 +281,7 @@
      # http://httpd.apache.org/docs/2.4/mod/core.html#options
      # for more information.
      #
@@ -76,7 +95,7 @@
  
      #
      # AllowOverride controls what directives may be placed in .htaccess files.
-@@ -321,6 +329,9 @@
+@@ -324,6 +329,9 @@
  LogLevel warn
  
  <IfModule log_config_module>
@@ -86,7 +105,7 @@
      #
      # The following directives define some format nicknames for use with
      # a CustomLog directive (see below).
-@@ -340,13 +351,18 @@
+@@ -343,13 +351,18 @@
      # define per-<VirtualHost> access logfiles, transactions will be
      # logged therein and *not* in this file.
      #
@@ -106,7 +125,7 @@
  </IfModule>
  
  <IfModule alias_module>
-@@ -534,8 +550,12 @@
+@@ -537,8 +550,12 @@
  Include conf/extra/proxy-html.conf
  </IfModule>
  
@@ -120,7 +139,7 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -546,3 +566,24 @@
+@@ -549,3 +566,24 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
