@@ -49,7 +49,10 @@ echo " Checking for a new httpd:2.4 image "
 echo "************************************"
 
 # Get the current image id
-ID_IMAGE_LOCAL=`docker inspect --format='{{.Id}}' httpd:2.4`
+if [ ! -z "`docker image ls httpd:2.4 | grep httpd`" ];
+then
+    ID_IMAGE_LOCAL=`docker inspect --format='{{.Id}}' httpd:2.4`
+fi
 
 docker pull httpd:2.4
 
@@ -59,7 +62,7 @@ ID_IMAGE_REMOTE=`docker inspect --format='{{.Id}}' httpd:2.4`
 echo "ID_IMAGE_LOCAL  $ID_IMAGE_LOCAL"
 echo "ID_IMAGE_REMOTE $ID_IMAGE_REMOTE"
 
-if [ "$ID_IMAGE_REMOTE" != "$ID_IMAGE_LOCAL" ];
+if [ ! -z $ID_IMAGE_LOCAL ] && [ "$ID_IMAGE_REMOTE" != "$ID_IMAGE_LOCAL" ];
 then
     echo "***********************************"
     echo "A new httpd:2.4 image was pulled"
