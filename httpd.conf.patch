@@ -1,5 +1,5 @@
---- image-httpd.conf	2019-09-16 13:19:48.000000000 -0700
-+++ httpd.conf	2019-08-19 21:31:50.000000000 -0700
+--- image-httpd.conf	2020-02-04 15:29:22.000000000 -0800
++++ httpd.conf	2020-02-04 15:29:22.000000000 -0800
 @@ -89,12 +89,11 @@
  #LoadModule isapi_module modules/mod_isapi.so
  #LoadModule file_cache_module modules/mod_file_cache.so

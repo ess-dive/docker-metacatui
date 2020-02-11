@@ -4,9 +4,14 @@ set -e
 
 if [ "$1" = 'httpd' ]; then
 
-
-    # Now copy the metacatui files over
-    cp -rnv /tmp/metacatui/* .
+    if [ -d /tmp/metacatui/ ];
+    then
+       # Now copy the metacatui files over
+       echo "************************************"
+       echo "Found /tmp/metacatui. Copying files"
+       echo "************************************"
+       cp -rfv /tmp/metacatui/* .
+    fi
 
     if [ "$ENABLE_SSL" == "1" ];
     then

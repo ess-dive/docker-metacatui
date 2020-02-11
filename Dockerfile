@@ -14,11 +14,12 @@ ENV SSL_SERVER_KEY=conf/server.key
 ENV SSL_SERVER_CERT=conf/server.crt
 ENV SSL_SERVER_CHAIN=conf/server-ca.crt
 
-ADD metacatui/src /tmp/metacatui
+RUN rm -rf htdocs/*
+ADD metacatui/src htdocs
 ADD httpd.conf.patch httpd-ssl.conf.patch /tmp/
 ADD ca-bundle.crt /usr/local/apache2/conf/ssl.crt/ca-bundle.crt
 ADD image_version.yml .
-RUN rm -rf htdocs/*
+
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         patch libcap2-bin\
