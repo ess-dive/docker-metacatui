@@ -100,8 +100,15 @@ echo "****************************"
 git log -n 1 --pretty="commit_count:  $(git rev-list HEAD --count)%ncommit_hash:   %h%nsubject:       %s%ncommitter:     %cN <%ce>%ncommiter_date: %ci%nauthor:        %aN <%ae>%nauthor_date:   %ai%nref_names:     %D" > image_version.yml
 cat image_version.yml
 
-echo "docker build -t metacatui:${DOCKER_TAG} $BUILD_ARGS ."
-docker build -t metacatui:${DOCKER_TAG} $BUILD_ARGS .
-docker tag metacatui:${DOCKER_TAG} metacatui
-docker tag metacatui:${DOCKER_TAG} ${REGISTRY_SPIN}/metacatui:${DOCKER_TAG}
+
+# Determine if there is an image
+IMAGE_NAME="metacatui:${DOCKER_TAG}"
+if [ "${REGISTRY_SPIN}" != "" ];
+then
+  # There is a spin registry
+  IMAGE_NAME="${REGISTRY_SPIN}/${IMAGE_NAME}"
+fi
+
+echo "docker build ${DOCKER_BUILD_OPTIONS} -t ${IMAGE_NAME} $BUILD_ARGS ."
+docker build ${DOCKER_BUILD_OPTIONS}  -t ${IMAGE_NAME} $BUILD_ARGS .
 
