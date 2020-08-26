@@ -13,6 +13,8 @@ ENV METACAT_APP_CONTEXT=metacat
 ENV SSL_SERVER_KEY=conf/server.key
 ENV SSL_SERVER_CERT=conf/server.crt
 ENV SSL_SERVER_CHAIN=conf/server-ca.crt
+ENV HTTPS_PORT=443
+ENV HTTP_PORT=80
 
 RUN rm -rf htdocs/*
 ADD metacatui/src htdocs

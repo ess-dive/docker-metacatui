@@ -31,6 +31,16 @@ if [ "$1" = 'httpd' ]; then
          EXTRA_ARGS="$EXTRA_ARGS -D EnableReverseProxy"
     fi
 
+    if [ "$ENABLE_REAL_IP" == "1" ];
+    then
+         # HTTPS termination confir (real ip)
+         #
+         # When using ssl termination, we need to inject proxy headers, and
+         # then configure Apache with the IP address range of the proxy to
+         # trust
+         EXTRA_ARGS="$EXTRA_ARGS -D EnableRealIp"
+    fi
+
 fi
 
 exec $@ $EXTRA_ARGS

@@ -22,6 +22,8 @@ The Metacat UI docker image requires access to a Metacat member node.
 The following environment variables are optional:
 
 **ENABLE_SSL:** pass a value of `1` to enable the ssl configuration.
+**ENABLE_REAL_IP:** pass a value of `1` to enable the injection of proxy headers to obtain the real incoming ipaddresses.
+**ENABLE_REVERSE_PROXY:** pass a value of `1` to enable the reverse proxy.
 
 **METACAT_UI_DOMAIN:** (default: 'localhost') The domain name of the 
 metacatui application. This is used in the apache configuration. 

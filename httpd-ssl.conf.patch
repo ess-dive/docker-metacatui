@@ -1,5 +1,5 @@
---- image-httpd-ssl.conf	2020-09-14 13:13:51.000000000 -0700
-+++ httpd-ssl.conf	2020-09-14 14:31:22.000000000 -0700
+--- image-httpd-ssl.conf	2020-10-14 06:50:00.000000000 -0700
++++ httpd-ssl.conf	2021-02-03 10:56:09.000000000 -0800
 @@ -1,12 +1,12 @@
  #
  # This is the Apache server configuration file providing SSL support.
@@ -16,7 +16,7 @@
  #
  # Required modules: mod_log_config, mod_setenvif, mod_ssl,
  #          socache_shmcb_module (for default value of SSLSessionCache)
-@@ -30,7 +30,7 @@
+@@ -30,10 +30,10 @@
  
  
  #
@@ -24,7 +24,11 @@
 +# When we also provide SSL we have to listen to the
  # standard HTTP port (see above) and to the HTTPS port
  #
- Listen 443
+-Listen 443
++Listen ${HTTPS_PORT}
+ 
+ ##
+ ##  SSL Global Context
 @@ -49,14 +49,16 @@
  #   ensure these follow appropriate best practices for this deployment.
  #   httpd 2.2.30, 2.4.13 and later force-disable aNULL, eNULL and EXP ciphers,
@@ -75,12 +79,17 @@
  #   to use and second the expiring timeout (in seconds).
  #SSLSessionCache         "dbm:/usr/local/apache2/logs/ssl_scache"
  SSLSessionCache        "shmcb:/usr/local/apache2/logs/ssl_scache(512000)"
-@@ -122,10 +126,11 @@
+@@ -118,14 +122,15 @@
+ ## SSL Virtual Host Context
+ ##
+ 
+-<VirtualHost _default_:443>
++<VirtualHost _default_:${HTTPS_PORT}>
  
  #   General setup for the virtual host
  DocumentRoot "/usr/local/apache2/htdocs"
 -ServerName www.example.com:443
-+ServerName ${METACAT_UI_DOMAIN}:443
++ServerName ${METACAT_UI_DOMAIN}:${HTTPS_PORT}
  ServerAdmin you@example.com
 -ErrorLog /proc/self/fd/2
 -TransferLog /proc/self/fd/1
@@ -108,17 +117,18 @@
  #SSLCertificateKeyFile "/usr/local/apache2/conf/server-dsa.key"
  #SSLCertificateKeyFile "/usr/local/apache2/conf/server-ecc.key"
  
-@@ -162,7 +167,8 @@
+@@ -162,7 +167,9 @@
  #   the referenced file can be the same as SSLCertificateFile
  #   when the CA certificates are directly appended to the server
  #   certificate for convenience.
 -#SSLCertificateChainFile "/usr/local/apache2/conf/server-ca.crt"
++
 +SSLCertificateChainFile ${SSL_SERVER_CHAIN}
 +
  
  #   Certificate Authority (CA):
  #   Set the CA certificate verification path where to find CA
-@@ -172,7 +178,7 @@
+@@ -172,7 +179,7 @@
  #         to point to the certificate files. Use the provided
  #         Makefile to update the hash symlinks after changes.
  #SSLCACertificatePath "/usr/local/apache2/conf/ssl.crt"
@@ -127,7 +137,7 @@
  
  #   Certificate Revocation Lists (CRL):
  #   Set the CA revocation path where to find CA CRLs for client
-@@ -197,7 +203,7 @@
+@@ -197,7 +204,7 @@
  
  #   TLS-SRP mutual authentication:
  #   Enable TLS-SRP and set the path to the OpenSSL SRP verifier
@@ -136,7 +146,7 @@
  #   Requires OpenSSL 1.0.1 or newer. See the mod_ssl FAQ for
  #   detailed instructions on creating this file. Example:
  #   "openssl srp -srpvfile /usr/local/apache2/conf/passwd.srpv -add username"
-@@ -244,7 +250,7 @@
+@@ -244,7 +251,7 @@
  #     and no other module can change it.
  #   o OptRenegotiate:
  #     This enables optimized SSL connection renegotiation handling when SSL
@@ -145,7 +155,7 @@
  #SSLOptions +FakeBasicAuth +ExportCertData +StrictRequire
  <FilesMatch "\.(cgi|shtml|phtml|php)$">
      SSLOptions +StdEnvVars
-@@ -270,7 +276,7 @@
+@@ -270,7 +277,7 @@
  #     alert of the client. This is 100% SSL/TLS standard compliant, but in
  #     practice often causes hanging connections with brain-dead browsers. Use
  #     this only for browsers where you know that their SSL implementation
@@ -154,7 +164,7 @@
  #   Notice: Most problems of broken clients are also related to the HTTP
  #   keep-alive facility, so you usually additionally want to disable
  #   keep-alive for those clients, too. Use variable "nokeepalive" for this.
-@@ -284,7 +290,42 @@
+@@ -284,7 +291,42 @@
  #   Per-Server Logging:
  #   The home of a custom SSL log file. Use this when you want a
  #   compact non-error SSL logfile on a virtual host basis.

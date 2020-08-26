@@ -1,5 +1,5 @@
 --- image-httpd.conf	2020-10-14 06:49:59.000000000 -0700
-+++ httpd.conf	2020-10-30 07:08:52.000000000 -0700
++++ httpd.conf	2021-02-03 10:56:09.000000000 -0800
 @@ -2,20 +2,20 @@
  # This is the main Apache HTTP server configuration file.  It contains the
  # configuration directives that give the server its instructions.
@@ -24,7 +24,7 @@
  # will be interpreted as '/logs/access_log'.
  
  #
-@@ -45,7 +45,7 @@
+@@ -45,11 +45,11 @@
  # ports, instead of the default. See also the <VirtualHost>
  # directive.
  #
@@ -33,6 +33,11 @@
  # prevent Apache from glomming onto all bound IP addresses.
  #
  #Listen 12.34.56.78:80
+-Listen 80
++Listen ${HTTP_PORT}
+ 
+ #
+ # Dynamic Shared Object (DSO) Support
 @@ -89,12 +89,11 @@
  #LoadModule isapi_module modules/mod_isapi.so
  #LoadModule file_cache_module modules/mod_file_cache.so
@@ -271,13 +276,13 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -549,3 +572,28 @@
+@@ -549,3 +572,38 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
 +Options -Indexes
 +
-+<VirtualHost *:80>
++<VirtualHost *:${HTTP_PORT}>
 +
 +    AllowEncodedSlashes On
 +    AcceptPathInfo      On
@@ -295,8 +300,18 @@
 +
 +    </IfDefine>
 +
++
++
 +    # Enable robots.txt and the sitemap
 +    RewriteRule ^/(sitemap.+) /${METACAT_APP_CONTEXT}/sitemaps/$1 [R=303]
 +    Alias /robots.txt /usr/local/apache2/htdocs/robots.txt
++
++    <IfDefine EnableRealIp>
++       # Spin 2 Trusted Ip addreses to forward
++       RemoteIPHeader        X-Forwarded-For
++       RemoteIPInternalProxy 10.42.0.0/16
++       RemoteIPInternalProxy 128.55.137.128/25
++    </IfDefine>
++
 +
 +</VirtualHost>
