@@ -16,13 +16,13 @@ ENV SSL_SERVER_CHAIN=conf/server-ca.crt
 
 RUN rm -rf htdocs/*
 ADD metacatui/src htdocs
-ADD httpd.conf.patch httpd-ssl.conf.patch /tmp/
+ADD httpd.conf.patch httpd-ssl.conf.patch robots.tmpl /tmp/
 ADD ca-bundle.crt /usr/local/apache2/conf/ssl.crt/ca-bundle.crt
 ADD image_version.yml .
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        patch libcap2-bin\
+        gettext-base patch libcap2-bin\
     && rm -rf /var/lib/apt/lists/*
 
 # Merge recommended settings for apache into default configuration

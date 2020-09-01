@@ -13,6 +13,14 @@ if [ "$1" = 'httpd' ]; then
        cp -rfv /tmp/metacatui/* .
     fi
 
+    if [ -f /tmp/robots.tmpl ];
+    then
+       # Defaults to disallow
+       export ROBOT_RULE=${ROBOT_RULE:-Disallow}
+       envsubst < /tmp/robots.tmpl > robots.txt
+       test -f robots.txt
+    fi
+
     if [ "$ENABLE_SSL" == "1" ];
     then
         EXTRA_ARGS="-D EnableSSL"

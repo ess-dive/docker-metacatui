@@ -1,5 +1,5 @@
---- image-httpd-ssl.conf	2020-02-04 15:29:22.000000000 -0800
-+++ httpd-ssl.conf	2020-02-04 15:29:22.000000000 -0800
+--- image-httpd-ssl.conf	2020-08-26 15:01:49.000000000 -0700
++++ httpd-ssl.conf	2020-09-01 15:43:32.000000000 -0700
 @@ -49,8 +49,10 @@
  #   ensure these follow appropriate best practices for this deployment.
  #   httpd 2.2.30, 2.4.13 and later force-disable aNULL, eNULL and EXP ciphers,
