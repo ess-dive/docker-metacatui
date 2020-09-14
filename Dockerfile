@@ -28,7 +28,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Merge recommended settings for apache into default configuration
 RUN groupadd -g ${METACATUI_GID} metacatui \
     && useradd -u ${METACATUI_UID} -g ${METACATUI_GID} -c 'MetacatUI User'  --no-create-home metacatui \
-    && chown -hR metacatui:metacatui /usr/local/apache2/ \
+    && mkdir -p /var/log/apache2 \
+    && chown -hR metacatui:metacatui /usr/local/apache2/ /var/log/apache2 \
     && chmod g+ws  /usr/local/apache2/htdocs/ \
     && patch conf/extra/httpd-ssl.conf /tmp/httpd-ssl.conf.patch \
     && patch conf/httpd.conf /tmp/httpd.conf.patch
@@ -40,6 +41,7 @@ RUN getcap /usr/local/apache2/bin/httpd
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
+
 
 USER metacatui
 WORKDIR htdocs

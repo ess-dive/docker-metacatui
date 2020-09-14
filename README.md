@@ -44,6 +44,10 @@ for the server certificate. Alternatively the referenced file can be the
 same as SSLCertificateFile when the CA certificates are directly appended to 
 the server certificate for convenience.
 
+## Image Logs
+Apache access and error logs are written to `/var/logs/apache2`. Mount a volume to  `/var/logs/apache2` if you want to persist your logs.
+
+
 ## Building and Running 
 Build the docker metacat image:
 
@@ -85,6 +89,7 @@ Run the docker container with SSL:
     
     docker run  -p 443:443  \
            -e ENABLE_SSL=1 \
+           -v ${PWD/logs:/var/logs/apache2 \
            -v ${PWD}/server.crt:/usr/local/apache2/conf/server.crt \
            -v ${PWD}/server.key:/usr/local/apache2/conf/server.key \
            --name metacatui-secure \
