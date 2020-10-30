@@ -1,5 +1,5 @@
---- image-httpd.conf	2020-09-14 13:13:51.000000000 -0700
-+++ httpd.conf	2020-09-14 17:18:35.000000000 -0700
+--- image-httpd.conf	2020-10-14 06:49:59.000000000 -0700
++++ httpd.conf	2020-10-30 07:08:52.000000000 -0700
 @@ -2,20 +2,20 @@
  # This is the main Apache HTTP server configuration file.  It contains the
  # configuration directives that give the server its instructions.
@@ -181,13 +181,13 @@
 +    # The log format is determined by the most recently specified
 +    # LogFormat directive which does not define a nickname.
 +    LogFormat "%a %l %u %t [R:%L] \"%r\" %>s %b %X \"%{Referer}i\" \"%{User-Agent}i\""
-+    LogFormat "%h %l %u %t [R:%L] \"%r\" %>s %b %X \"%{Referer}i\" \"%{User-Agent}i\"" combined
-+    LogFormat "%h %l %u %t [R:%L] \"%r\" %>s %b %X" common
++    LogFormat "%a %l %u %t [R:%L] \"%r\" %>s %b %X \"%{Referer}i\" \"%{User-Agent}i\"" combined
++    LogFormat "%a %l %u %t [R:%L] \"%r\" %>s %b %X" common
  
      <IfModule logio_module>
        # You need to enable mod_logio.c to use %I and %O
 -      LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
-+      LogFormat "%h %l %u %t [R:%L] \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
++      LogFormat "%a %l %u %t [R:%L] \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
      </IfModule>
  
      #
