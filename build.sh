@@ -76,20 +76,19 @@ then
         echo "***************************************"
         echo "One of the image configs is different"
         echo "You need to review for patch changes"
-        echo "***************************************"
-        echo $DIFF_CONFS
+        echo ""
+        echo "diffs:$DIFF_CONFS"
+        echo ""
+        echo "Create new patch files of the new"
+	echo " configurations"
+        echo "diff  -u image-httpd.conf httpd.conf > httpd.conf.patch"
+        echo "diff  -u image-httpd-ssl.conf httpd-ssl.conf > httpd-ssl.conf.patch"
+        echo "***********************************"
+
         exit 1
     fi
 
 fi
-
-echo "***********************************"
-echo "Patching configuration files"
-echo "***********************************"
-
-# Create path files for the apache conf files
-diff  -u image-httpd.conf httpd.conf > httpd.conf.patch || true
-diff  -u image-httpd-ssl.conf httpd-ssl.conf > httpd-ssl.conf.patch || true
 
 cd $DIR
 DOCKER_TAG="${METACATUI_TAG}-p$(cd $DIR; git rev-list HEAD --count)"
