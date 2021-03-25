@@ -1,5 +1,5 @@
---- image-httpd.conf	2020-10-14 06:49:59.000000000 -0700
-+++ httpd.conf	2021-02-03 10:56:09.000000000 -0800
+--- image-httpd.conf	2021-03-24 11:09:09.000000000 -0700
++++ httpd.conf	2021-03-25 15:01:05.000000000 -0700
 @@ -2,20 +2,20 @@
  # This is the main Apache HTTP server configuration file.  It contains the
  # configuration directives that give the server its instructions.
@@ -276,11 +276,19 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -549,3 +572,38 @@
+@@ -549,3 +572,46 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
 +Options -Indexes
++
++# Enable CORS; this supports metacat being remote from the js code
++Header always append X-Frame-Options SAMEORIGIN
++SetEnvIf Origin "^(.*)$" ORIGIN_DOMAIN=$1
++Header set Access-Control-Allow-Origin "%{ORIGIN_DOMAIN}e" env=ORIGIN_DOMAIN
++Header set Access-Control-Allow-Headers "Authorization, Content-Type, Origin, Cache-Control"
++Header set Access-Control-Allow-Methods "GET, POST, PUT, OPTIONS"
++Header set Access-Control-Allow-Credentials "true"
 +
 +<VirtualHost *:${HTTP_PORT}>
 +
