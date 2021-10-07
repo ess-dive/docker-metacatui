@@ -1,5 +1,5 @@
---- image-httpd.conf	2021-09-10 09:18:39.000000000 -0700
-+++ httpd.conf	2021-10-12 08:36:56.000000000 -0700
+--- image-httpd.conf	2021-10-07 10:19:55.000000000 -0700
++++ httpd.conf	2021-10-13 14:57:42.000000000 -0700
 @@ -2,20 +2,20 @@
  # This is the main Apache HTTP server configuration file.  It contains the
  # configuration directives that give the server its instructions.
@@ -276,7 +276,7 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -549,3 +572,50 @@
+@@ -549,3 +572,53 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
@@ -295,6 +295,10 @@
 +    AllowEncodedSlashes On
 +    AcceptPathInfo      On
 +
++    RewriteEngine on
++    RewriteRule "^/datasets(.*)" "/view$1" [R,L]
++    RewriteRule "^/(sitemap.+)" "/${METACAT_APP_CONTEXT}/sitemaps/$1" [R=303,L]
++
 +    ProxyPass "/${METACAT_APP_CONTEXT}/" "ajp://${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/" nocanon retry=0 timeout=300
 +    ProxyPassReverse "/${METACAT_APP_CONTEXT}/" "ajp:/${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/"
 +
@@ -311,7 +315,6 @@
 +
 +
 +    # Enable robots.txt and the sitemap
-+    RewriteRule ^/(sitemap.+) /${METACAT_APP_CONTEXT}/sitemaps/$1 [R=303]
 +    Alias /robots.txt /usr/local/apache2/htdocs/robots.txt
 +
 +    <IfDefine EnableRealIp>
