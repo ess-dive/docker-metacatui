@@ -1,5 +1,5 @@
---- image-httpd.conf	2021-03-24 11:09:09.000000000 -0700
-+++ httpd.conf	2021-03-25 15:01:05.000000000 -0700
+--- image-httpd.conf	2021-09-10 09:18:39.000000000 -0700
++++ httpd.conf	2021-10-12 08:36:56.000000000 -0700
 @@ -2,20 +2,20 @@
  # This is the main Apache HTTP server configuration file.  It contains the
  # configuration directives that give the server its instructions.
@@ -276,7 +276,7 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -549,3 +572,46 @@
+@@ -549,3 +572,50 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
@@ -319,6 +319,10 @@
 +       RemoteIPHeader        X-Forwarded-For
 +       RemoteIPInternalProxy 10.42.0.0/16
 +       RemoteIPInternalProxy 128.55.137.128/25
++       RemoteIPInternalProxy 128.55.212.0/24
++       RemoteIPInternalProxy 128.55.206.0/24
++
++
 +    </IfDefine>
 +
 +
