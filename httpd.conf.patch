@@ -1,5 +1,5 @@
---- image-httpd.conf	2021-10-07 10:19:55.000000000 -0700
-+++ httpd.conf	2021-10-13 14:57:42.000000000 -0700
+--- image-httpd.conf	2021-12-24 08:01:44.000000000 -0800
++++ httpd.conf	2021-12-24 08:02:00.000000000 -0800
 @@ -2,20 +2,20 @@
  # This is the main Apache HTTP server configuration file.  It contains the
  # configuration directives that give the server its instructions.
@@ -276,7 +276,7 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -549,3 +572,53 @@
+@@ -549,3 +572,54 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
@@ -298,6 +298,7 @@
 +    RewriteEngine on
 +    RewriteRule "^/datasets(.*)" "/view$1" [R,L]
 +    RewriteRule "^/(sitemap.+)" "/${METACAT_APP_CONTEXT}/sitemaps/$1" [R=303,L]
++    RequestHeader set X-Proxy-Key "${METACAT_SSL_PROXY_KEY}"
 +
 +    ProxyPass "/${METACAT_APP_CONTEXT}/" "ajp://${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/" nocanon retry=0 timeout=300
 +    ProxyPassReverse "/${METACAT_APP_CONTEXT}/" "ajp:/${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/"
