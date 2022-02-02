@@ -24,7 +24,7 @@ ADD image_version.yml .
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        gettext-base patch libcap2-bin\
+        gettext-base patch libcap2-bin vim procps\
     && rm -rf /var/lib/apt/lists/*
 
 # Merge recommended settings for apache into default configuration
