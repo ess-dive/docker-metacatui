@@ -1,5 +1,5 @@
---- image-httpd.conf	2021-12-24 08:01:44.000000000 -0800
-+++ httpd.conf	2021-12-24 08:02:00.000000000 -0800
+--- image-httpd.conf	2022-02-02 08:35:31.000000000 -0800
++++ httpd.conf	2022-02-02 14:33:15.000000000 -0800
 @@ -2,20 +2,20 @@
  # This is the main Apache HTTP server configuration file.  It contains the
  # configuration directives that give the server its instructions.
@@ -296,8 +296,8 @@
 +    AcceptPathInfo      On
 +
 +    RewriteEngine on
-+    RewriteRule "^/datasets(.*)" "/view$1" [R,L]
-+    RewriteRule "^/(sitemap.+)" "/${METACAT_APP_CONTEXT}/sitemaps/$1" [R=303,L]
++    RewriteRule "^/datasets(.*)" "https://%{SERVER_NAME}/view$1" [R,L]
++    RewriteRule "^/(sitemap.+)" "https://%{SERVER_NAME}/${METACAT_APP_CONTEXT}/sitemaps$1" [R=303,L]
 +    RequestHeader set X-Proxy-Key "${METACAT_SSL_PROXY_KEY}"
 +
 +    ProxyPass "/${METACAT_APP_CONTEXT}/" "ajp://${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/" nocanon retry=0 timeout=300
