@@ -34,14 +34,15 @@ RUN groupadd -g ${METACATUI_GID} metacatui \
     && chown -hR metacatui:metacatui /usr/local/apache2/ /var/log/apache2 \
     && chmod g+ws  /usr/local/apache2/htdocs/ \
     && patch conf/extra/httpd-ssl.conf /tmp/httpd-ssl.conf.patch \
-    && patch conf/httpd.conf /tmp/httpd.conf.patch
+    && patch conf/httpd.conf /tmp/httpd.conf.patch \
+    && chown metacatui:metacatui /tmp/*
 
 #setcap to bind to privileged ports as non-root
 RUN setcap 'cap_net_bind_service=+ep' /usr/local/apache2/bin/httpd
 RUN getcap /usr/local/apache2/bin/httpd
 
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+RUN chmod 775 /usr/local/bin/docker-entrypoint.sh && ln -s usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 
