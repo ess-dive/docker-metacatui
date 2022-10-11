@@ -19,6 +19,7 @@ ENV HTTP_PORT=80
 RUN rm -rf htdocs/*
 ADD metacatui/src htdocs
 ADD httpd.conf.patch httpd-ssl.conf.patch robots.tmpl /tmp/
+# CA Bundle cert with DataONECAChain, DataONETestCAChain and CILogon Basic CA
 ADD ca-bundle.crt /usr/local/apache2/conf/ssl.crt/ca-bundle.crt
 ADD image_version.yml .
 
@@ -35,7 +36,9 @@ RUN groupadd -g ${METACATUI_GID} metacatui \
     && chmod g+ws  /usr/local/apache2/htdocs/ \
     && patch conf/extra/httpd-ssl.conf /tmp/httpd-ssl.conf.patch \
     && patch conf/httpd.conf /tmp/httpd.conf.patch \
-    && chown metacatui:metacatui /tmp/*
+    && chown metacatui:metacatui /tmp/* \
+    # Enable weak digital signature from DataONE CA Cert
+    && sed -i 's/DEFAULT@SECLEVEL=2/DEFAULT@SECLEVEL=1/' /usr/lib/ssl/openssl.cnf
 
 #setcap to bind to privileged ports as non-root
 RUN setcap 'cap_net_bind_service=+ep' /usr/local/apache2/bin/httpd
