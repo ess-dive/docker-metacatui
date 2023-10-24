@@ -1,6 +1,8 @@
---- image-httpd.conf	2022-02-02 08:35:31.000000000 -0800
-+++ httpd.conf	2022-02-02 14:33:15.000000000 -0800
-@@ -2,20 +2,20 @@
+--- image-httpd.conf	2023-08-17 14:44:37
++++ httpd.conf	2023-10-23 10:46:07
+@@ -1,21 +1,22 @@
+ #
++#
  # This is the main Apache HTTP server configuration file.  It contains the
  # configuration directives that give the server its instructions.
  # See <URL:http://httpd.apache.org/docs/2.4/> for detailed information.
@@ -24,7 +26,7 @@
  # will be interpreted as '/logs/access_log'.
  
  #
-@@ -45,11 +45,11 @@
+@@ -45,11 +46,11 @@
  # ports, instead of the default. See also the <VirtualHost>
  # directive.
  #
@@ -38,7 +40,7 @@
  
  #
  # Dynamic Shared Object (DSO) Support
-@@ -89,12 +89,11 @@
+@@ -89,12 +90,11 @@
  #LoadModule isapi_module modules/mod_isapi.so
  #LoadModule file_cache_module modules/mod_file_cache.so
  #LoadModule cache_module modules/mod_cache.so
@@ -53,7 +55,7 @@
  #LoadModule watchdog_module modules/mod_watchdog.so
  #LoadModule macro_module modules/mod_macro.so
  #LoadModule dbd_module modules/mod_dbd.so
-@@ -120,7 +119,6 @@
+@@ -120,7 +120,6 @@
  #LoadModule deflate_module modules/mod_deflate.so
  #LoadModule xml2enc_module modules/mod_xml2enc.so
  #LoadModule proxy_html_module modules/mod_proxy_html.so
@@ -61,7 +63,7 @@
  LoadModule mime_module modules/mod_mime.so
  #LoadModule ldap_module modules/mod_ldap.so
  LoadModule log_config_module modules/mod_log_config.so
-@@ -138,17 +136,17 @@
+@@ -138,17 +137,17 @@
  #LoadModule unique_id_module modules/mod_unique_id.so
  LoadModule setenvif_module modules/mod_setenvif.so
  LoadModule version_module modules/mod_version.so
@@ -83,7 +85,7 @@
  #LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
  #LoadModule proxy_express_module modules/mod_proxy_express.so
  #LoadModule proxy_hcheck_module modules/mod_proxy_hcheck.so
-@@ -158,7 +156,7 @@
+@@ -158,7 +157,7 @@
  #LoadModule session_dbd_module modules/mod_session_dbd.so
  #LoadModule slotmem_shm_module modules/mod_slotmem_shm.so
  #LoadModule slotmem_plain_module modules/mod_slotmem_plain.so
@@ -92,7 +94,7 @@
  #LoadModule optional_hook_export_module modules/mod_optional_hook_export.so
  #LoadModule optional_hook_import_module modules/mod_optional_hook_import.so
  #LoadModule optional_fn_import_module modules/mod_optional_fn_import.so
-@@ -166,7 +164,6 @@
+@@ -166,7 +165,6 @@
  #LoadModule dialup_module modules/mod_dialup.so
  #LoadModule http2_module modules/mod_http2.so
  #LoadModule proxy_http2_module modules/mod_proxy_http2.so
@@ -100,7 +102,7 @@
  #LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so
  #LoadModule lbmethod_bytraffic_module modules/mod_lbmethod_bytraffic.so
  #LoadModule lbmethod_bybusyness_module modules/mod_lbmethod_bybusyness.so
-@@ -196,12 +193,12 @@
+@@ -196,19 +194,19 @@
  #LoadModule speling_module modules/mod_speling.so
  #LoadModule userdir_module modules/mod_userdir.so
  LoadModule alias_module modules/mod_alias.so
@@ -115,7 +117,16 @@
  #
  # User/Group: The name (or #number) of the user/group to run httpd as.
  # It is usually good practice to create a dedicated user and group for
-@@ -238,11 +235,11 @@
+ # running httpd, as with most system services.
+ #
+-User www-data
+-Group www-data
++User daemon
++Group daemon
+ 
+ </IfModule>
+ 
+@@ -238,11 +236,11 @@
  #
  # If your host doesn't have a registered DNS name, enter its IP address here.
  #
@@ -129,7 +140,7 @@
  # <Directory> blocks below.
  #
  <Directory />
-@@ -264,6 +261,14 @@
+@@ -264,6 +262,14 @@
  #
  DocumentRoot "/usr/local/apache2/htdocs"
  <Directory "/usr/local/apache2/htdocs">
@@ -144,7 +155,7 @@
      #
      # Possible values for the Options directive are "None", "All",
      # or any combination of:
-@@ -276,7 +281,7 @@
+@@ -276,7 +282,7 @@
      # http://httpd.apache.org/docs/2.4/mod/core.html#options
      # for more information.
      #
@@ -153,7 +164,7 @@
  
      #
      # AllowOverride controls what directives may be placed in .htaccess files.
-@@ -300,8 +305,8 @@
+@@ -300,8 +306,8 @@
  </IfModule>
  
  #
@@ -164,7 +175,7 @@
  #
  <Files ".ht*">
      Require all denied
-@@ -324,16 +329,28 @@
+@@ -324,16 +330,28 @@
  LogLevel warn
  
  <IfModule log_config_module>
@@ -182,13 +193,13 @@
 +    ErrorLogFormat request "[%{uc}t] [R:%L] UA:'%+{User-Agent}i'"
 +    ErrorLogFormat request "[%{uc}t] [R:%L] Referer:'%+{Referer}i'"
 +    ErrorLogFormat connection "[%{uc}t] [C:%{c}L] local\ %a remote\ %A"
-+
+ 
 +    # The log format is determined by the most recently specified
 +    # LogFormat directive which does not define a nickname.
 +    LogFormat "%a %l %u %t [R:%L] \"%r\" %>s %b %X \"%{Referer}i\" \"%{User-Agent}i\""
 +    LogFormat "%a %l %u %t [R:%L] \"%r\" %>s %b %X \"%{Referer}i\" \"%{User-Agent}i\"" combined
 +    LogFormat "%a %l %u %t [R:%L] \"%r\" %>s %b %X" common
- 
++
      <IfModule logio_module>
        # You need to enable mod_logio.c to use %I and %O
 -      LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
@@ -196,16 +207,16 @@
      </IfModule>
  
      #
-@@ -342,20 +359,22 @@
+@@ -342,20 +360,22 @@
      # container, they will be logged here.  Contrariwise, if you *do*
      # define per-<VirtualHost> access logfiles, transactions will be
      # logged therein and *not* in this file.
 -    #
 -    CustomLog /proc/self/fd/1 common
-+
+ 
 +    # Output to stdout
 +    CustomLog /proc/self/fd/1 combined
- 
++
      #
 -    # If you prefer a logfile with access, agent, and referer information
 -    # (Combined Logfile Format) you can use the following directive.
@@ -227,7 +238,7 @@
      # will make a new request for the document at its new location.
      # Example:
      # Redirect permanent /foo http://www.example.com/bar
-@@ -372,7 +391,7 @@
+@@ -372,7 +392,7 @@
      # the filesystem path.
  
      #
@@ -236,7 +247,7 @@
      # ScriptAliases are essentially the same as Aliases, except that
      # documents in the target directory are treated as applications and
      # run by the server when requested rather than as documents sent to the
-@@ -484,10 +503,10 @@
+@@ -484,10 +504,10 @@
  #MaxRanges unlimited
  
  #
@@ -249,7 +260,7 @@
  # filesystems or if support for these functions is otherwise
  # broken on your system.
  # Defaults: EnableMMAP On, EnableSendfile Off
-@@ -497,9 +516,9 @@
+@@ -497,9 +517,9 @@
  
  # Supplemental configuration
  #
@@ -262,7 +273,7 @@
  # necessary.
  
  # Server-pool management (MPM specific)
-@@ -537,8 +556,12 @@
+@@ -537,8 +557,12 @@
  Include conf/extra/proxy-html.conf
  </IfModule>
  
@@ -276,7 +287,7 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -549,3 +572,54 @@
+@@ -549,3 +573,54 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
@@ -300,7 +311,7 @@
 +    RewriteRule "^/(sitemap.+)" "https://%{SERVER_NAME}/${METACAT_APP_CONTEXT}/sitemaps$1" [R=303,L]
 +    RequestHeader set X-Proxy-Key "${METACAT_SSL_PROXY_KEY}"
 +
-+    ProxyPass "/${METACAT_APP_CONTEXT}/" "ajp://${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/" nocanon retry=0 timeout=300
++    ProxyPass "/${METACAT_APP_CONTEXT}/" "ajp://${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/" nocanon retry=${METACAT_APP_RETRY} timeout=${METACAT_APP_TIMEOUT}
 +    ProxyPassReverse "/${METACAT_APP_CONTEXT}/" "ajp:/${METACAT_MN_DOMAIN}:8009/${METACAT_APP_CONTEXT}/"
 +
 +    <IfDefine EnableReverseProxy>
