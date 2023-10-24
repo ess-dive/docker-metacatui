@@ -41,6 +41,12 @@ if [ "$1" = 'httpd' ]; then
          EXTRA_ARGS="$EXTRA_ARGS -D EnableRealIp"
     fi
 
+    if [ "${ENABLE_LOG_OUTPUT}" != "0" ];
+    then
+         # Output the logs to files
+         EXTRA_ARGS="$EXTRA_ARGS -D EnableLogOutput"
+    fi
+
 fi
 
 exec $@ $EXTRA_ARGS

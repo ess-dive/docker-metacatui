@@ -1,5 +1,5 @@
---- image-httpd.conf	2023-08-17 14:44:37
-+++ httpd.conf	2023-10-23 10:46:07
+--- image-httpd.conf	2023-10-23 10:48:26
++++ httpd.conf	2023-10-24 08:20:37
 @@ -1,21 +1,22 @@
  #
 +#
@@ -207,25 +207,28 @@
      </IfModule>
  
      #
-@@ -342,20 +360,22 @@
+@@ -342,20 +360,25 @@
      # container, they will be logged here.  Contrariwise, if you *do*
      # define per-<VirtualHost> access logfiles, transactions will be
      # logged therein and *not* in this file.
 -    #
 -    CustomLog /proc/self/fd/1 common
  
-+    # Output to stdout
-+    CustomLog /proc/self/fd/1 combined
-+
-     #
+-    #
 -    # If you prefer a logfile with access, agent, and referer information
 -    # (Combined Logfile Format) you can use the following directive.
--    #
++    # Output to stdout, stderr
++    CustomLog /proc/self/fd/1 combined
++    ErrorLog  /proc/self/fd/2
++
++    <IfDefine EnableLogOutput>
+     #
 -    #CustomLog "logs/access_log" combined
 +    # Rotate access and error logs to files
 +    CustomLog "|/usr/local/apache2/bin/rotatelogs /var/log/apache2/${HOSTNAME}_accesslog.%Y.%m 86400" combined
 +    ErrorLog  "|/usr/local/apache2/bin/rotatelogs /var/log/apache2/${HOSTNAME}_errorlog.%Y-%m-%d-%H_%M 100M"
 +
++    </IfDefine>
 +
  </IfModule>
  
@@ -238,7 +241,7 @@
      # will make a new request for the document at its new location.
      # Example:
      # Redirect permanent /foo http://www.example.com/bar
-@@ -372,7 +392,7 @@
+@@ -372,7 +395,7 @@
      # the filesystem path.
  
      #
@@ -247,7 +250,7 @@
      # ScriptAliases are essentially the same as Aliases, except that
      # documents in the target directory are treated as applications and
      # run by the server when requested rather than as documents sent to the
-@@ -484,10 +504,10 @@
+@@ -484,10 +507,10 @@
  #MaxRanges unlimited
  
  #
@@ -260,7 +263,7 @@
  # filesystems or if support for these functions is otherwise
  # broken on your system.
  # Defaults: EnableMMAP On, EnableSendfile Off
-@@ -497,9 +517,9 @@
+@@ -497,9 +520,9 @@
  
  # Supplemental configuration
  #
@@ -273,7 +276,7 @@
  # necessary.
  
  # Server-pool management (MPM specific)
-@@ -537,8 +557,12 @@
+@@ -537,8 +560,12 @@
  Include conf/extra/proxy-html.conf
  </IfModule>
  
@@ -287,7 +290,7 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
-@@ -549,3 +573,54 @@
+@@ -549,3 +576,54 @@
  SSLRandomSeed connect builtin
  </IfModule>
  
